@@ -13,7 +13,7 @@ replaceImages(document.querySelectorAll("img,figure"));
 const observer = new MutationObserver((mutationsList, _observer) => {
   for (let mutation of mutationsList) {
     if (mutation.type === "childList") {
-      mutation.addedNodes.forEach((addedNode) => {
+      for (let addedNode of mutation.addedNodes) {
         if (addedNode.nodeType != Node.ELEMENT_NODE) {
           return;
         }
@@ -26,7 +26,7 @@ const observer = new MutationObserver((mutationsList, _observer) => {
 
         let elements = addedNode.querySelectorAll("img,figure");
         replaceImages(elements);
-      })
+      }
     } else if (mutation.type === "attributes" && mutation.target.tagName.toLowerCase() === "img") {
       if (!mutation.target.src.startsWith(catUrl)) {
         mutation.target.src = `${catUrl}?${mutation.target.src}`;
