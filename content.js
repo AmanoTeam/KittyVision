@@ -8,13 +8,19 @@ function replaceImages(images) {
   }
 }
 
-replaceImages(document.getElementsByTagName("img"));
+replaceImages(document.querySelectorAll("img,figure"));
 
 const observer = new MutationObserver((mutationsList, _observer) => {
   for (let mutation of mutationsList) {
     if (mutation.type === "childList") {
       mutation.addedNodes.forEach((addedNode) => {
-        let elements = addedNode.getElementsByTagName("img");
+        if (addedNode.nodeName === "img" || addedNode.nodeName === "figure") {
+          let docFragment = document.createDocumentFragment();
+          docFragment.appendChild(addedNode);
+          return replaceImages(docFragment.children);
+        }
+
+        let elements = addedNode.querySelectorAll("img,figure");
         replaceImages(elements);
       })
     } else if (mutation.type === "attributes" && mutation.target.tagName.toLowerCase() === "img") {
