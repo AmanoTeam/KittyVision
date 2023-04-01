@@ -1,0 +1,26 @@
+{
+  "name": "KittyVision",
+  "version": "1.0",
+  "description": "Replaces all images on websites with cats",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "webNavigation"
+  ],
+  "content_scripts": [
+    {
+      "all_frames": true,
+      "run_at": "document_end",
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
+    }
+  ]
+}
