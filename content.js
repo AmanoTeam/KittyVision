@@ -1,9 +1,9 @@
 const catUrl = "https://cataas.com/cat";
 
 function replaceImages(images) {
-  for (let i = 0; i < images.length; i++) {
-    if (!images[i].src.startsWith(catUrl)) {
-      images[i].src = `${catUrl}?${images[i].src}`;
+  for (let image of images) {
+    if (!image.src.startsWith(catUrl)) {
+      image.src = `${catUrl}?${image.src}`;
     }
   }
 }
@@ -14,6 +14,10 @@ const observer = new MutationObserver((mutationsList, _observer) => {
   for (let mutation of mutationsList) {
     if (mutation.type === "childList") {
       mutation.addedNodes.forEach((addedNode) => {
+        if (addedNode.nodeType != Node.ELEMENT_NODE) {
+          return;
+        }
+
         if (addedNode.nodeName === "img" || addedNode.nodeName === "figure") {
           let docFragment = document.createDocumentFragment();
           docFragment.appendChild(addedNode);
